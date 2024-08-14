@@ -1,0 +1,29 @@
+PUT /_ingest/pipeline/cisco_pdf
+{
+  "description": "Extract and decode attachment information from PDFs",
+  "processors": [
+    {
+      "attachment": {
+        "field": "data",
+        "target_field": "attachment",
+        "indexed_chars": -1
+      }
+    },
+    {
+      "remove": {
+        "field": "data"
+      }
+    }
+  ]
+}
+PUT index1
+
+
+GET index1/_search
+{
+  "query": {
+    "match_phrase": {
+      "attachment.content": "Cisco"
+    }
+  }
+}
